@@ -8,8 +8,8 @@
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            background:linear-gradient(to right, #0044ff, #ff3300);
-            color: #333;
+            background: linear-gradient(to right, #0044ff, #ff3300);
+            color: #000000;
             padding: 20px;
         }
         .vote-box {
@@ -51,6 +51,15 @@
             color: white;
             border-radius: 5px;
         }
+        .message {
+            margin-top: 20px;
+            font-size: 18px;
+            padding: 10px;
+            background: #ff9900;
+            color: white;
+            border-radius: 5px;
+            display: none; /* Initially hidden */
+        }
     </style>
 </head>
 <body>
@@ -60,28 +69,28 @@
             <div id="categories"></div>
             <button type="button" onclick="submitVotes()">Enviar Votos</button>
         </form>
+        <div id="message" class="message"></div>
     </div>
     <a class="back-button" href="index.html">Volver al inicio</a>
-    
+
     <script>
         const categories = [
-            "Mejor pelea del año",
+        "Mejor pelea del año",
             "Momento más gracioso de Yanina",
             "Mejor chisme revelado",
             "Frase más icónica",
-            "Momento más polémico",
             "Peor metida de pata",
             "Mejor respuesta filosa",
-            "Mejor look de Yanina",
             "Chisme más inesperado",
-            "Momento más tenso en vivo",
             "La discusión más épica",
             "El comentario más picante",
-            "El blooper más divertido",
             "Mejor dupla de panelistas",
             "El momento más viral"
-        ];
-        
+                ];
+
+        const SUPABASE_URL = "https://zjriynsjvfyrhxxsrxic.supabase.co";
+        const SUPABASE_API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpqcml5bnNqdmZ5cmh4eHNyeGljIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDA5NDEzMDMsImV4cCI6MjA1NjUxNzMwM30.kClVDuG1Xt5se-LDMwYajkwb2wQKAtNjJL4j3ptQeBM";
+
         function loadCategories() {
             const container = document.getElementById("categories");
             categories.forEach(category => {
@@ -92,19 +101,51 @@
                 container.appendChild(div);
             });
         }
-        
-        function submitVotes() {
-            let votes = {};
-            categories.forEach(category => {
-                let value = document.getElementById(category).value;
-                if (value.trim() !== "") {
-                    votes[category] = value;
-                }
-            });
-            localStorage.setItem("votes", JSON.stringify(votes));
-            alert("¡Gracias por votar!");
+
+        function showMessage(message, isError = false) {
+            const messageElement = document.getElementById("message");
+            messageElement.style.backgroundColor = isError ? "#ff3300" : "#33cc33";
+            messageElement.textContent = message;
+            messageElement.style.display = "block";
         }
-        
+
+        async function submitVotes() {
+            const votes = categories.map(category => {
+                const value = document.getElementById(category).value.trim();
+                return value ? { categoria: category, voto: value } : null;
+            }).filter(vote => vote !== null);
+
+            if (votes.length === 0) {
+                showMessage("No completaste ninguna categoría.", true);
+                return;
+            }
+
+            try {
+                // Enviar todos los votos a la vez
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/votos`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "apikey": SUPABASE_API_KEY,
+                        "Authorization": `Bearer ${SUPABASE_API_KEY}`,
+                        "Prefer": "return=minimal"
+                    },
+                    body: JSON.stringify(votes)  // Enviar los votos como un solo array
+                });
+
+                if (response.ok) {
+                    showMessage("¡Gracias por votar!", false);
+                    document.getElementById("voteForm").reset();
+                } else {
+                    showMessage("Hubo un error al guardar tus votos.", true);
+                    console.error(await response.text());
+                }
+            } catch (error) {
+                console.error("Error general al conectar con Supabase:", error);
+                showMessage("Hubo un error al guardar tus votos.", true);
+            }
+        }
+
         loadCategories();
     </script>
 </body>
