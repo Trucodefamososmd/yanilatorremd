@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yanina Latorre</title>
+    <style>
+        :root {
+            --bg-color: linear-gradient(to right, #0044ff, #ff3300);
+            --text-color: white;
+            --button-bg: rgba(0, 0, 0, 0.6);
+            --button-hover: rgba(0, 0, 0, 0.8);
+            --back-button: black;
+            --back-hover: gray;
+        }
+
+        .dark-mode {
+            --bg-color: linear-gradient(to right, #222, #444);
+            --text-color: #ddd;
+            --button-bg: rgba(255, 255, 255, 0.3);
+            --button-hover: rgba(255, 255, 255, 0.5);
+            --back-button: #555;
+            --back-hover: #777;
+        }
+
+        body {
+            background: var(--bg-color);
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            transition: 0.3s;
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+
+        h1 {
+            font-size: 3em;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px;
+        }
+
+        .game-option {
+            width: 250px;
+            padding: 15px;
+            font-size: 1.5em;
+            color: white;
+            background: var(--button-bg);
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .game-option:hover {
+            background: var(--button-hover);
+        }
+
+        .back-button {
+            display: block;
+            margin-top: 50px;
+            padding: 15px;
+            background: var(--back-button);
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            width: 250px;
+            margin: 20px auto;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        .back-button:hover {
+            background: var(--back-hover);
+        }
+
+        .toggle-dark-mode {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            padding: 10px 15px;
+            background: black;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 10px;
+            font-size: 1em;
+            font-weight: bold;
+        }
+
+        .toggle-dark-mode:hover {
+            background: gray;
+        }
+    </style>
+</head>
+<body>
+    <button class="toggle-dark-mode" id="darkModeToggle">🌙 Modo Oscuro</button>
+
+    <div class="container">
+        <h1>Yanina Latorre</h1>
+        <div class="button-container">
+            <button class="game-option" onclick="location.href='bio.html'">Biografia</button>
+            <button class="game-option" onclick="location.href='trivia.html'">Trivia</button>
+            <button class="game-option" onclick="location.href='quetan.html'">¿Qué tan Yanina sos?</button>
+            <button class="game-option" onclick="location.href='prefe.html'">¿Qué angelita preferís?</button>
+            <button class="game-option" onclick="location.href='moda.html'">La Moda de Yanina</button>
+            <button class="game-option" onclick="location.href='meme.html'">Genera tu meme</button>
+            <button class="game-option" onclick="location.href='simulador.html'">Simulador de discusión con Yanina</button>
+            <button class="game-option" onclick="location.href='premios.html'">Premios Yanina: Los Angelitos del Año</button>
+            <button class="game-option" onclick="location.href='escape.html'">Adivina el famoso</button>
+            <button class="game-option" onclick="location.href='lam.html'">Simulador de lam</button>
+            <button class="game-option" onclick="location.href='oraculo.html'">El Oráculo de Yanina</button>
+            <button class="game-option" onclick="location.href='ruleta.html'">Ruleta de peleas</button>
+            <button class="game-option" onclick="location.href='frase.html'">Insultómetro de Yanina</button>
+            <button class="game-option" onclick="location.href='inves.html'">Investigando con Yanina</button>
+            <button class="game-option" onclick="location.href='generar.html'">Crea tu propio chisme</button>
+            </div>
+    
+        <a class="back-button" href="https://sites.google.com/view/yaninalatorremd/yanina-latorre?authuser=6">Volver al inicio</a>
+    </div>
+
+    <script>
+        const toggleButton = document.getElementById("darkModeToggle");
+
+        if (localStorage.getItem("darkMode") === "enabled") {
+            document.body.classList.add("dark-mode");
+            toggleButton.innerHTML = "☀️ Modo Claro";
+        }
+
+        toggleButton.addEventListener("click", () => {
+            document.body.classList.toggle("dark-mode");
+
+            if (document.body.classList.contains("dark-mode")) {
+                localStorage.setItem("darkMode", "enabled");
+                toggleButton.innerHTML = "☀️ Modo Claro";
+            } else {
+                localStorage.setItem("darkMode", "disabled");
+                toggleButton.innerHTML = "🌙 Modo Oscuro";
+            }
+        });
+    </script>
+</body>
+</html>

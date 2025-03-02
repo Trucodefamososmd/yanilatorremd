@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Descubrí el Chisme</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background:linear-gradient(to right, #0044ff, #ff3300);
+            color: #333;
+            padding: 20px;
+        }
+        .game-box {
+            width: 80%;
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+        }
+        button {
+            padding: 12px;
+            background: #ff6600;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            font-size: 1em;
+            transition: 0.3s;
+        }
+        button:hover {
+            background: #cc5500;
+        }
+        input {
+            padding: 10px;
+            width: 80%;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+        .back-button {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            padding: 12px;
+            background: black;
+            color: white;
+            border-radius: 5px;
+            font-size: 1em;
+            transition: 0.3s;
+        }
+        .back-button:hover {
+            background: gray;
+        }
+        .mensaje {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+        .restart-button {
+            background: green;
+            margin-top: 20px;
+        }
+        .restart-button:hover {
+            background: darkgreen;
+        }
+    </style>
+</head>
+<body>
+    <h1>¿Qué tan rápido descubrís al famoso?</h1>
+    <h2>Completa el nombre y apellido</h2>
+    <h2>Son 3 pistas por famoso. Si tocas mas veces "nueva pista", cambia de famoso</h2>
+    <div class="game-box">
+        <p id="pista">Presioná "Nueva pista" para comenzar.</p>
+        <button onclick="nuevaPista()">Nueva Pista</button>
+        <input type="text" id="respuesta" placeholder="¿Quién es?">
+        <button onclick="verificarRespuesta()">Responder</button>
+        <button onclick="mostrarRespuesta()">Ver Respuesta</button>
+        <button id="reiniciarBtn" class="restart-button" onclick="volverAJugar()">Volver a Jugar</button>
+        <p class="mensaje" id="mensaje"></p>
+    </div>
+    <a class="back-button" href="index.html">Volver al inicio</a>
+
+    <script>
+const casos = [
+    { pistas: ["1 - Estuvo en Bailando por un Sueño.", "2 - Tuvo una pelea con Yanina.", "3 - Esta de novia con un abogado."], respuesta: "Cinthia Fernández" },
+    { pistas: ["1 - Trabaja en LAM.", "2 - Es la mejor panelista.", "3 - Trabaja con Ángel de Brito."], respuesta: "Yanina Latorre" },
+    { pistas: ["1 - Es modelo.", "2 - Fue pareja de un futbolista famoso.", "3 - Participó en reality shows."], respuesta: "Nicole Neumann" },
+    { pistas: ["1 - Es periodista.", "2 - Sabe mucho sobre la farándula.", "3 - Fue conductor de Intrusos."], respuesta: "Jorge Rial" },
+    { pistas: ["1 - Conductora de eltrece.", "2 - Tiene 98 años.", "3 - Es actriz"], respuesta: "Mirtha Legrand" },
+    { pistas: ["1 - Participó en Patito Feo.", "2 - Fue pareja de Adrián Suar.", "3 - Actriz de envidiosa."], respuesta: "Griselda Siciliani" },
+    { pistas: ["1 - Trabaja con Diego Latorre.", "2 - Conductor en ESPN.", "3 - Es conocido como el Pollo."], respuesta: "El pollo Vignolo" },
+    { pistas: ["1 - Actriz argentina.", "2 - Fue parte de Casi Ángeles.", "3 - Se casó con Michael Bublé."], respuesta: "Luisana Lopilato" },
+    { pistas: ["1 - Periodista de espectáculos.", "2 - Trabaja en Intrusos.", "3 - Se caracteriza por sus fuertes opiniones."], respuesta: "Marcela Tauro" },
+    { pistas: ["1 - Conductor y periodista.", "2 - Trabajó en América TV.", "3 - Conducia Animales Sueltos."], respuesta: "Alejandro Fantino" },
+    { pistas: ["1 - Conductora de Nadie Dice Nada.", "2 - Es balarina y comediante.", "3 - Fue pareja de Marcelo Tinelli."], respuesta: "Momi Giardina" },
+    { pistas: ["1 - Periodista de espectáculos.", "2 - Conductor de LAM.", "3 - Tiene su propio programa en Bondi."], respuesta: "Ángel de Brito" },
+    { pistas: ["1 - Es humorista.", "2 - Se hizo famoso en Videomatch.", "3 - Tiene su programa en Luzu."], respuesta: "Pachu Peña" },
+    { pistas: ["1 - Creador de Luzu Tv.", "2 - Pareja de Flor Jazmin Peña.", "3 - Ganó un Bailando."], respuesta: "Nicolas Occhiato" },
+    { pistas: ["1 - Es influencer.", "2 - Hizo muchos vivos con Yanina en Instagram.", "3 - Conductor en Rumis."], respuesta: "Lizardo Ponce" },
+    { pistas: ["1 - Cantante argentino.", "2 - Hizo una exitosa carrera en España.", "3 - Su hit Color Esperanza fue un éxito."], respuesta: "Diego Torres" },
+    { pistas: ["1 - Es un reconocido chef.", "2 - Es italiano.", "3 - Fue jurado en MasterChef."], respuesta: "Donato de Santis" }
+];
+
+        let casoActual = null;
+        let pistaActual = -1;
+        let contadorPistas = 0;
+
+        function nuevaPista() {
+            const mensaje = document.getElementById("mensaje");
+            mensaje.innerText = "";
+            
+            if (casoActual === null || pistaActual >= 2) {
+                casoActual = casos[Math.floor(Math.random() * casos.length)];
+                pistaActual = 0;
+                contadorPistas = 0;  // Resetear el contador de pistas al comenzar un nuevo juego
+                document.getElementById("pista").innerText = casoActual.pistas[pistaActual];
+            } else if (pistaActual < casoActual.pistas.length - 1) {
+                pistaActual++;
+                contadorPistas++;
+                document.getElementById("pista").innerText = casoActual.pistas[pistaActual];
+            } else {
+                document.getElementById("pista").innerText = "No hay más pistas.";
+            }
+
+            // Verificar si después de 3 pistas el usuario no ha respondido
+            if (contadorPistas === 3) {
+                mensaje.innerText = "¡Debes arriesgar o volver a jugar!";
+            }
+        }
+
+        function verificarRespuesta() {
+            const respuestaUsuario = document.getElementById("respuesta").value.trim();
+            const mensaje = document.getElementById("mensaje");
+
+            if (respuestaUsuario.toLowerCase() === casoActual.respuesta.toLowerCase()) {
+                mensaje.innerText = "¡Respuesta correcta!";
+            } else {
+                mensaje.innerText = "Respuesta incorrecta. ¡Intenta de nuevo!";
+            }
+        }
+
+        function mostrarRespuesta() {
+            const mensaje = document.getElementById("mensaje");
+            mensaje.innerText = `La respuesta correcta es: ${casoActual.respuesta}`;
+        }
+
+        function volverAJugar() {
+            // Cambiar a una nueva persona y mostrar la primera pista
+            casoActual = casos[Math.floor(Math.random() * casos.length)];
+            pistaActual = 0;
+            contadorPistas = 0;
+            document.getElementById("pista").innerText = casoActual.pistas[pistaActual];
+            document.getElementById("respuesta").value = ""; // Limpiar la respuesta
+            document.getElementById("mensaje").innerText = ""; // Limpiar mensaje
+        }
+    </script>
+</body>
+</html>

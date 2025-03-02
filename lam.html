@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador de LAM</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background:linear-gradient(to right, #0044ff, #ff3300);
+            color: #333;
+            padding: 20px;
+        }
+        .game-box {
+            width: 80%;
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+        }
+        input, button {
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 1em;
+        }
+        button {
+            background: #ff6600;
+            color: white;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        button:hover {
+            background: #cc5500;
+        }
+        .respuesta {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+        .buttons {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Simulador de LAM</h1>
+    <h2>Escribí un tema y mirá cómo reaccionan los panelistas</h2>
+    <div class="game-box">
+        <label for="tema">Escribí el tema:</label>
+        <input type="text" id="tema" placeholder="Ej: Escándalo del momento">
+        <button onclick="generarDebate()">Iniciar Debate</button>
+        <p class="respuesta" id="respuesta"></p>
+        <div class="buttons">
+            <button onclick="nuevoTema()">Hablar de un Nuevo Tema</button>
+            <button onclick="volverInicio()">Volver al Inicio</button>
+        </div>
+    </div>
+    
+    <script>
+        const panelistas = {
+            "Yanina Latorre": [
+                "¡Yo esto lo sabía desde hace meses!", 
+                "Siempre me terminan dando la razón.", 
+                "A mí no me van a callar.", 
+                "Esto es un circo mediático.", 
+                "No me interesa lo que digan, yo digo la verdad."
+            ],
+            "Ángel de Brito": [
+                "Bueno, vamos a contar toda la verdad.", 
+                "Yo les dije que esto iba a explotar.", 
+                "Los famosos no aprenden más.", 
+                "La gente quiere saber la posta.", 
+                "No me sorprende para nada."
+            ],
+            "Marixa Balli": [
+                "A mí esto me pasó hace años.", 
+                "¡Siempre el mismo cuento!", 
+                "Los medios agrandan todo.", 
+                "Yo no me meto en estos líos.", 
+                "Esto me da déjà vu."
+            ],
+            "Nazarena Vélez": [
+                "Esto me parece un espanto.", 
+                "¡No lo puedo creer!", 
+                "Acá hay cosas que no se están contando.", 
+                "Es un escándalo total.", 
+                "¡Yo le creo a ella!"
+            ],
+            "Juli Argenta": [
+                "Me muero con este tema.", 
+                "Yo sabía que esto iba a pasar.", 
+                "La gente está en shock con esto.", 
+                "¿Y ahora qué van a decir?", 
+                "Las redes están explotando."
+            ],
+            "La Barby": [
+                "Esto es puro humo.", 
+                "No hay que creer todo lo que dicen.", 
+                "A mí me contaron otra cosa.", 
+                "Siempre con el mismo chisme.", 
+                "No sé qué pensar de esto."
+            ],
+            "Marcela Feudale": [
+                "Yo ya lo veía venir.", 
+                "Esto tiene muchas aristas.", 
+                "Me parece que no es tan así.", 
+                "No podemos afirmar nada todavía.", 
+                "Vamos a analizar bien los hechos."
+            ],
+            "Pepe Ochoa": [
+                "Este tema es tremendo.", 
+                "Las pruebas son claras.", 
+                "La gente está hablando de esto en todos lados.", 
+                "Hay que esperar más información.", 
+                "Para mí hay algo más detrás."
+            ],
+            "Fefe Bongiorno": [
+                "Yo no lo puedo creer.", 
+                "Siempre con la misma novela.", 
+                "Esto da para largo.", 
+                "Las redes ya tomaron partido.", 
+                "Se viene un escándalo gigante."
+            ]
+        };
+
+        function generarDebate() {
+            const tema = document.getElementById("tema").value.trim();
+            if (!tema) {
+                document.getElementById("respuesta").innerText = "Por favor, escribí un tema.";
+                return;
+            }
+
+            const panelistasNombres = Object.keys(panelistas);
+            const seleccionados = [];
+            while (seleccionados.length < 3) {
+                const randomPanelista = panelistasNombres[Math.floor(Math.random() * panelistasNombres.length)];
+                if (!seleccionados.includes(randomPanelista)) {
+                    seleccionados.push(randomPanelista);
+                }
+            }
+            
+            const respuestas = seleccionados.map(panelista => {
+                const frases = panelistas[panelista];
+                return `${panelista}: "${frases[Math.floor(Math.random() * frases.length)]}"`;
+            }).join("\n\n");
+            
+            document.getElementById("respuesta").innerText = respuestas;
+        }
+
+        function nuevoTema() {
+            document.getElementById("tema").value = "";
+            document.getElementById("respuesta").innerText = "";
+        }
+
+        function volverInicio() {
+            window.location.href = "index.html";
+        }
+    </script>
+</body>
+</html>

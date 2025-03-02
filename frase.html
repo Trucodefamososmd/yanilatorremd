@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insultómetro de Yanina</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background:linear-gradient(to right, #0044ff, #ff3300);
+            color: #000000;
+            text-align: center;
+            padding: 20px;
+        }
+        h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        #situacion {
+            font-size: 20px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        button {
+            background-color: #000000;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            margin: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 8px;
+        }
+        button:hover {
+            background-color: #000000;
+        }
+        #resultado {
+            font-weight: bold;
+            margin-top: 15px;
+        }
+        #volver {
+            margin-top: 30px;
+            background-color: #000000;
+        }
+    </style>
+</head>
+<body>
+
+<h1>🤬 Insultómetro de Yanina</h1>
+<p id="situacion">Situación: Cargando...</p>
+
+<button onclick="evaluarRespuesta('facil')">¿Pero qué me importa?</button>
+<button onclick="evaluarRespuesta('medio')">¡Es un imbécil!</button>
+<button onclick="evaluarRespuesta('dificil')">¡Que me venga a buscar, cagon de mierda!</button>
+
+<p id="resultado"></p>
+
+<a href="index.html"><button id="volver">Volver al Inicio</button></a>
+
+<script>
+    const situaciones = [
+        "Le sacan una nota vieja a Diego",
+        "Una angelita la critica en otro programa",
+        "Le inventan un romance a Lola",
+        "La acusan de recibir data de Rial",
+        "Un seguidor la trata de agrandada en Instagram",
+        "Cinthia Fernández dice que ella miente",
+        "Una marca le quiere pagar con canje",
+        "La invitan a un evento donde también está Ana Rosenfeld",
+        "Una ex angelita le deja de hablar",
+        "Le preguntan por qué sigue casada con Diego",
+        "Un programa dice que Ángel le tiene miedo",
+        "Le preguntan por su relación con Mariana Nannis",
+        "Un ex compañero la ataca en redes",
+        "La culpan de no saber cómo hacer su trabajo",
+        "Le dicen que está pasada de moda",
+        "Un amigo le cuenta un chisme y se lo cuentan mal",
+        "La acusan de ser 'diva' en la televisión",
+        "La critican por ser 'poco profesional'",
+        "Un famoso le deja de seguir en Instagram",
+        "Le sugieren que debería retirarse de la televisión",
+        "Un panelista dice que no sabe qué hace en el programa",
+        "Le piden que deje de ser tan agresiva con los demás",
+        "La llaman 'la reina del escándalo' en otro canal"
+    ];
+
+    const respuestas = {
+        'facil': [
+            "Nivel Fácil: Bien, esta es la Yanina light. 💅",
+            "Nivel Fácil: Relajada, no le da mucha bola. ✌️",
+            "Nivel Fácil: Ah, qué sé yo... No pasa nada. 😎"
+        ],
+        'medio': [
+            "Nivel Medio: Ahora sí, un poquito de picante. 🌶️",
+            "Nivel Medio: ¡Dejá de hablar mal de mí! 😤",
+            "Nivel Medio: No te metas conmigo, te aviso. 🛑"
+        ],
+        'dificil': [
+            "Nivel Difícil: ¡Esta es la Yanina real! 🔥",
+            "Nivel Difícil: ¡Te arruino la vida, peluca! 👑",
+            "Nivel Difícil: ¡Me chupa todo un huevo, no me venís a dar consejos! 🚨"
+        ]
+    };
+
+    let ultimaSituacion = "";
+
+    function elegirSituacion() {
+        let nuevaSituacion = situaciones[Math.floor(Math.random() * situaciones.length)];
+
+        // Asegurarse de que la situación no se repita
+        while (nuevaSituacion === ultimaSituacion) {
+            nuevaSituacion = situaciones[Math.floor(Math.random() * situaciones.length)];
+        }
+
+        ultimaSituacion = nuevaSituacion;
+        document.getElementById("situacion").innerText = "Situación: " + nuevaSituacion;
+    }
+
+    function evaluarRespuesta(nivel) {
+        // Mostrar la respuesta seleccionada
+        let respuestasNivel = respuestas[nivel];
+        let mensaje = respuestasNivel[Math.floor(Math.random() * respuestasNivel.length)];
+
+        document.getElementById("resultado").innerText = mensaje;
+
+        // Después de elegir una respuesta, mostrar una nueva situación inmediatamente
+        setTimeout(() => {
+            elegirSituacion(); // Cambia la situación
+            document.getElementById("resultado").innerText = ''; // Borra el resultado
+        }, 1000); // Espera 1 segundo para mostrar la nueva situación
+    }
+
+    window.onload = elegirSituacion; // Llama a la función cuando se carga la página
+</script>
+
+</body>
+</html>

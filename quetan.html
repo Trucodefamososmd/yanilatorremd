@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¿Qué tan Yanina sos?</title>
+    <style>
+        body {
+            background:linear-gradient(to right, #0044ff, #ff3300);
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            color: white;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            margin-top: 50px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 15px;
+            display: inline-block;
+        }
+        h1 {
+            font-size: 3em;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
+        }
+        .question {
+            font-size: 1.5em;
+            margin: 20px;
+        }
+        .option {
+            display: block;
+            width: 250px;
+            margin: 10px auto;
+            padding: 10px;
+            font-size: 1.2em;
+            color: white;
+            background: rgba(255, 255, 255, 0.3);
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .option:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+        .back-button {
+            display: block;
+            margin-top: 50px;
+            padding: 15px;
+            background: black;
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            width: 250px;
+            margin: 20px auto;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        .back-button:hover {
+            background: gray;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>¿Qué tan Yanina sos?</h1>
+        <div id="quiz">
+            <p class="question" id="question"></p>
+            <div id="options"></div>
+        </div>
+        <p id="result" style="font-size: 1.5em; margin-top: 20px;"></p>
+        <a class="back-button" href="index.html">Volver al inicio</a>
+    </div>
+    <script>
+        const questions = [
+            { question: "Si te critican, ¿qué hacés?", options: ["Me río y sigo", "Bloqueo y denuncio", "Contesto y los destruyo"], points: [1, 2, 3] },
+            { question: "¿Qué tanto seguís las tendencias de la moda?", options: ["Me da igual", "A veces sigo alguna", "Siempre estoy al día"], points: [1, 2, 3] },
+            { question: "Si tenés que decirle algo fuerte a alguien, ¿cómo lo hacés?", options: ["Con diplomacia", "Sin filtro", "Con show incluido"], points: [1, 2, 3] },
+            { question: "¿Cuánto te importa la opinión de los demás?", options: ["Mucho", "Depende quién", "Nada en absoluto"], points: [1, 2, 3] },
+            { question: "¿Qué hacés cuando ves un chisme jugoso?", options: ["Me lo guardo", "Lo comento con amigos", "Lo publico ya mismo"], points: [1, 2, 3] },
+            { question: "¿Cómo reaccionás en una discusión?", options: ["Trato de calmar la situación", "Me defiendo con argumentos", "Voy con todo"], points: [1, 2, 3] },
+            { question: "¿Qué tan activa sos en redes sociales?", options: ["Casi no las uso", "Publico de vez en cuando", "Estoy siempre en el ojo del huracán"], points: [1, 2, 3] },
+            { question: "Si alguien habla mal de vos, ¿cómo respondés?", options: ["Lo ignoro", "Le contesto", "Lo destruyo públicamente"], points: [1, 2, 3] },
+            { question: "¿Cómo es tu sentido del humor?", options: ["Suave", "Picante", "Letal"], points: [1, 2, 3] },
+            { question: "¿Te considerás una persona frontal?", options: ["No mucho", "A veces", "Siempre"], points: [1, 2, 3] },
+            { question: "¿Te molesta que hablen de vos?", options: ["Sí, prefiero el perfil bajo", "Depende quién", "No, que hablen lo que quieran"], points: [1, 2, 3] },
+            { question: "¿Qué hacés cuando ves una injusticia?", options: ["Nada, no me meto", "Doy mi opinión", "Armo un escándalo"], points: [1, 2, 3] }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+
+        function loadQuestion() {
+            let questionElement = document.getElementById("question");
+            let optionsElement = document.getElementById("options");
+            
+            let currentQuestion = questions[currentQuestionIndex];
+            questionElement.innerText = currentQuestion.question;
+            optionsElement.innerHTML = "";
+            
+            currentQuestion.options.forEach((option, index) => {
+                let button = document.createElement("button");
+                button.classList.add("option");
+                button.innerText = option;
+                button.onclick = () => selectAnswer(currentQuestion.points[index]);
+                optionsElement.appendChild(button);
+            });
+        }
+
+        function selectAnswer(points) {
+            score += points;
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                loadQuestion();
+            } else {
+                showResult();
+            }
+        }
+
+        function showResult() {
+            let resultText = "";
+            if (score <= 8) {
+                resultText = "Sos un/a Yanina principiante. ¡Te falta un poco más de picante!";
+            } else if (score <= 16) {
+                resultText = "Sos medio Yanina. ¡Ya tenés algo de actitud!";
+            } else {
+                resultText = "¡Sos Yanina 100%! No le tenés miedo a nada.";
+            }
+            document.getElementById("quiz").innerHTML = `<h2>${resultText}</h2>`;
+        }
+
+        loadQuestion();
+    </script>
+</body>
+</html>

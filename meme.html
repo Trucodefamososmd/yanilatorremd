@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meme Generator de Yanina</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background:linear-gradient(to right, #0044ff, #ff3300);
+            color: #333;
+        }
+        canvas {
+            border: 2px solid black;
+            margin-top: 20px;
+            cursor: grab;
+        }
+        .button {
+            display: inline-block;
+            margin: 20px;
+            padding: 10px 20px;
+            background: black;
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        .button:hover {
+            background: gray;
+        }
+        input[type="text"] {
+            width: 60%;
+            padding: 10px;
+            margin-top: 10px;
+            border: 2px solid black;
+            border-radius: 10px;
+            font-size: 1.2em;
+            text-align: center;
+            outline: none;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        input[type="text"]:focus {
+            border-color: gray;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <h1>Crea tu meme de Yanina</h1>
+    <h3>Arrastra el texto para donde quieras</h3>
+    <h3>Cuando termines tu meme, sacale captura de pantalla!</h3>
+    <canvas id="memeCanvas" width="500" height="500"></canvas>
+    <br>
+    <input type="text" id="memeText" placeholder="Escribe tu meme aquí">
+    <br>
+    <button class="button" onclick="generateMeme()">Cambiar foto</button>
+    <br>
+    <a class="button" href="index.html">Volver al inicio</a>
+    
+    <script>
+        let images = [];
+        for (let i = 1; i <= 10; i++) {
+            let img = new Image();
+            img.src = `memes/${i}.png`;
+            images.push(img);
+        }
+
+        let canvas = document.getElementById("memeCanvas");
+        let ctx = canvas.getContext("2d");
+        let text = "";
+        let textX = 250;
+        let textY = 50;
+        let isDragging = false;
+        let selectedImage = new Image();
+
+        function drawMeme() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(selectedImage, 0, 0, canvas.width, canvas.height);
+            ctx.font = "30px Arial";
+            ctx.fillStyle = "white";
+            ctx.strokeStyle = "black";
+            ctx.lineWidth = 3;
+            ctx.textAlign = "center";
+            ctx.strokeText(text, textX, textY);
+            ctx.fillText(text, textX, textY);
+        }
+
+        document.getElementById("memeText").addEventListener("input", function() {
+            text = this.value;
+            drawMeme();
+        });
+
+        canvas.addEventListener("mousedown", function(event) {
+            isDragging = true;
+        });
+
+        canvas.addEventListener("mousemove", function(event) {
+            if (isDragging) {
+                textX = event.offsetX;
+                textY = event.offsetY;
+                drawMeme();
+            }
+        });
+
+        canvas.addEventListener("mouseup", function() {
+            isDragging = false;
+        });
+
+        function generateMeme() {
+            let randomIndex = Math.floor(Math.random() * images.length);
+            selectedImage = new Image();
+            selectedImage.src = images[randomIndex].src;
+            selectedImage.onload = function() {
+                drawMeme(); // Asegura que la imagen esté completamente cargada antes de dibujar
+            };
+        }
+
+        window.onload = function() {
+            generateMeme();
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Generador de Chismes 📝</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background:linear-gradient(to right, #0044ff, #ff3300);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: white;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+        }
+        h1 {
+            font-size: 2.5rem;
+            color: #ff3366;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 1.2rem;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        .chisme {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333;
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #f7f7f7;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            min-height: 60px;
+            display: none; /* Hide until the process is completed */
+        }
+        .section {
+            font-size: 1.2rem;
+            margin: 20px;
+            color: #333;
+        }
+        button {
+            padding: 15px 25px;
+            background-color: #ff3366;
+            color: white;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #e6005c;
+        }
+        button:focus {
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>El Generador de Chismes 📝</h1>
+    <p>¡Genera un chisme aleatorio y divertido combinando nombres, lugares y acciones!</p>
+    
+    <div id="nombre" class="section">Nombre: <span id="nombre-value">---</span></div>
+    <div id="lugar" class="section">Lugar: <span id="lugar-value">---</span></div>
+    <div id="accion" class="section">Acción: <span id="accion-value">---</span></div>
+
+    <div class="chisme" id="chisme">¡Aquí aparecerá tu chisme!</div>
+    
+    <button onclick="generarChisme()">Generar Chisme</button>
+    <button onclick="volverInicio()">Volver al inicio</button>
+</div>
+
+<script>
+    const nombres = ["Yanina Latorre", "Georgina Barbarossa", "Cande Molfese", "Diego Leuco", "Momi Giardina", "Angel De Brito", "El Tirri", "Fede Bal", "Laurita Fernandez", "Marcelo Tinelli", "Lucas Spadafora", "Wanda Nara", "Emilia Mernes", "Lgante", "Icardi"];
+    const lugares = ["en la playa", "en el restaurante", "en un bar", "en el estudio de televisión", "en una fiesta", "en la avion", "en el teatro", "en un cine", "en un museo", "en una hotel"];
+    const acciones = ["bailando", "cantando", "hablando con un desconocido", "haciendo un truco de magia", "tomando un cóctel", "sacandose fotos", "jugando al burako", "patinando", "tomando clases de ingles", "paseando en un auto lujoso", "montando un caballo", "jugando al minigolf"];
+
+    function generarChisme() {
+        document.getElementById("chisme").style.display = "none"; // Hide until it's generated
+
+        // Simulating the roulette effect with a delay between each element
+        setTimeout(() => {
+            const nombre = nombres[Math.floor(Math.random() * nombres.length)];
+            document.getElementById('nombre-value').innerText = nombre;
+        }, 1000); // First step: show nombre
+
+        setTimeout(() => {
+            const lugar = lugares[Math.floor(Math.random() * lugares.length)];
+            document.getElementById('lugar-value').innerText = lugar;
+        }, 2000); // Second step: show lugar
+
+        setTimeout(() => {
+            const accion = acciones[Math.floor(Math.random() * acciones.length)];
+            document.getElementById('accion-value').innerText = accion;
+        }, 3000); // Third step: show accion
+
+        setTimeout(() => {
+            const nombre = document.getElementById('nombre-value').innerText;
+            const lugar = document.getElementById('lugar-value').innerText;
+            const accion = document.getElementById('accion-value').innerText;
+            document.getElementById("chisme").innerText = `LAAAAAAAAAAM: Vimos a ${nombre} ${accion} ${lugar}. ¡Increíble!`;
+            document.getElementById("chisme").style.display = "block"; // Show the chisme
+        }, 3500); // Final step: show the full chisme
+    }
+
+    function volverInicio() {
+        window.location.href = "index.html"; // Redirige al archivo index.html
+    }
+</script>
+
+</body>
+</html>

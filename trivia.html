@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trivia - Yanina Games</title>
+    <style>
+        body {
+            background:linear-gradient(to right, #0044ff, #ff3300);
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            color: white;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            margin-top: 50px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 15px;
+            display: inline-block;
+        }
+        h1 {
+            font-size: 3em;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
+        }
+        .question {
+            font-size: 1.5em;
+            margin: 20px;
+        }
+        .option {
+            display: block;
+            width: 250px;
+            margin: 10px auto;
+            padding: 10px;
+            font-size: 1.2em;
+            color: white;
+            background: rgba(255, 255, 255, 0.3);
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .option:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+        .back-button {
+            display: block;
+            margin-top: 50px;
+            padding: 15px;
+            background: black;
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            width: 250px;
+            margin: 20px auto;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        .back-button:hover {
+            background: gray;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Trivia sobre Yanina Latorre</h1>
+        <div id="trivia">
+            <p class="question" id="question"></p>
+            <div id="options"></div>
+        </div>
+        <p id="score" style="font-size: 1.5em; margin-top: 20px;"></p>
+        <a class="back-button" href="index.html">Volver al inicio</a>
+    </div>
+    <script>
+        const questions = [
+            { question: "¿En qué año nació Yanina Latorre?", options: ["1969", "1973", "1975", "1978"], answer: "1969" },
+            { question: "¿Cuál es el nombre completo de Yanina?", options: ["Yanina Latorre", "Yanina Gonzalez", "Yanina Arruza​", "Yanina Luján"], answer: "Yanina Arruza​" },
+            { question: "¿En qué ciudad nació Yanina?", options: ["Buenos Aires", "Rosario", "La Plata", "Córdoba"], answer: "Buenos Aires" },
+            { question: "¿En qué programa es panelista fija?", options: ["LAM", "Intrusos", "Bendita", "PH"], answer: "LAM" },
+            { question: "¿Cuál es su apodo más común en los medios?", options: ["La Reina", "Yani", "La Latorre", "Lady Yanina"], answer: "Yani" },
+            { question: "¿Quién es su esposo?", options: ["Diego Latorre", "Marcelo Tinelli", "Ángel de Brito", "Jorge Rial"], answer: "Diego Latorre" },
+            { question: "¿En qué red social es más activa?", options: ["Instagram", "TikTok", "Facebook", "Snapchat"], answer: "Instagram" },
+            { question: "¿Cómo se llaman sus hijos?", options: ["Camila y Tomas", "Lola y Diego", "Lucas y Martina", "Sofía y Marcos"], answer: "Lola y Diego" },
+            { question: "¿Qué estudió en la universidad?", options: ["Derecho", "Arquitectura", "Contaduría", "Periodismo"], answer: "Contaduría" },
+            { question: "¿Cuantos Martin Fierro gano como 'Mejor panelista'?", options: ["0", "1", "2", "3"], answer: "2" },
+            { question: "¿Cuando cumple años Yanina?", options: ["17/1", "24/3", "10/4", "30/8"], answer: "24/3" },
+            { question: "¿Con que periodista trabajó Yanina?", options: ["Lanata", "El pollo alvarez", "Lapegue", "Leuco"], answer: "Lanata" },
+            { question: "¿Con quien solía hacer los vivos en la pandemia Yanina?", options: ["Lucas Spadafora", "Martin Cirio", "Momi Giardina", "Lizardo Ponce"], answer: "Lizardo Ponce" },
+            { question: "Verdadero o Falso - Yanina ganó un Martin Fierro de la moda", options: ["Verdadero", "Falso"], answer: "Verdadero" },
+            { question: "¿En que radio trabaja Yanina?", options: ["El observador", "FM rock & pop", "Radio Rivadavia", "FM Aspen"], answer: "El observador" }
+        ];
+
+        let currentQuestionIndex = 0;
+        let correctAnswers = 0;
+
+        function loadQuestion() {
+            let questionElement = document.getElementById("question");
+            let optionsElement = document.getElementById("options");
+            
+            let currentQuestion = questions[currentQuestionIndex];
+            questionElement.innerText = currentQuestion.question;
+            optionsElement.innerHTML = "";
+            
+            currentQuestion.options.forEach(option => {
+                let button = document.createElement("button");
+                button.classList.add("option");
+                button.innerText = option;
+                button.onclick = () => checkAnswer(button, option === currentQuestion.answer);
+                optionsElement.appendChild(button);
+            });
+        }
+
+        function checkAnswer(button, isCorrect) {
+            button.style.background = isCorrect ? "green" : "red";
+            if (isCorrect) correctAnswers++;
+            setTimeout(() => {
+                currentQuestionIndex++;
+                if (currentQuestionIndex < questions.length) {
+                    loadQuestion();
+                } else {
+                    document.getElementById("trivia").innerHTML = `<h2>🎉 ¡Terminaste la trivia!</h2><p>Respondiste correctamente ${correctAnswers} de ${questions.length} preguntas.</p>`;
+                }
+            }, 1000);
+        }
+
+        loadQuestion();
+    </script>
+</body>
+</html>

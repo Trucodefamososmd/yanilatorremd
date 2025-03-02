@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premios Yanina: Los Angelitos del Año</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background:linear-gradient(to right, #0044ff, #ff3300);
+            color: #333;
+            padding: 20px;
+        }
+        .vote-box {
+            width: 80%;
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+        .category {
+            margin: 10px 0;
+        }
+        input {
+            width: 80%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ff9900;
+        }
+        button {
+            padding: 10px;
+            background: #ff9900;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background: #cc6600;
+        }
+        .back-button {
+            display: block;
+            margin-top: 20px;
+            text-decoration: none;
+            padding: 10px;
+            background: black;
+            color: white;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Premios Yanina: Los Angelitos del Año</h1>
+    <div class="vote-box">
+        <form id="voteForm">
+            <div id="categories"></div>
+            <button type="button" onclick="submitVotes()">Enviar Votos</button>
+        </form>
+    </div>
+    <a class="back-button" href="index.html">Volver al inicio</a>
+    
+    <script>
+        const categories = [
+            "Mejor pelea del año",
+            "Momento más gracioso de Yanina",
+            "Mejor chisme revelado",
+            "Frase más icónica",
+            "Momento más polémico",
+            "Peor metida de pata",
+            "Mejor respuesta filosa",
+            "Mejor look de Yanina",
+            "Chisme más inesperado",
+            "Momento más tenso en vivo",
+            "La discusión más épica",
+            "El comentario más picante",
+            "El blooper más divertido",
+            "Mejor dupla de panelistas",
+            "El momento más viral"
+        ];
+        
+        function loadCategories() {
+            const container = document.getElementById("categories");
+            categories.forEach(category => {
+                const div = document.createElement("div");
+                div.classList.add("category");
+                div.innerHTML = `<strong>${category}</strong><br>
+                                 <input type="text" id="${category}" placeholder="Escribí tu voto aquí">`;
+                container.appendChild(div);
+            });
+        }
+        
+        function submitVotes() {
+            let votes = {};
+            categories.forEach(category => {
+                let value = document.getElementById(category).value;
+                if (value.trim() !== "") {
+                    votes[category] = value;
+                }
+            });
+            localStorage.setItem("votes", JSON.stringify(votes));
+            alert("¡Gracias por votar!");
+        }
+        
+        loadCategories();
+    </script>
+</body>
+</html>

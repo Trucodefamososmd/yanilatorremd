@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador de Discusión con Yanina</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background:linear-gradient(to right, #0044ff, #ff3300);
+            color: #333;
+            padding: 20px;
+        }
+        .chat-box {
+            width: 80%;
+            max-width: 500px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+        .messages {
+            height: 300px;
+            overflow-y: auto;
+            border-bottom: 2px solid #ff6666;
+            padding-bottom: 10px;
+        }
+        .input-box {
+            margin-top: 10px;
+        }
+        input {
+            width: 80%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ff6666;
+        }
+        button {
+            padding: 10px;
+            background: #ff6666;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #cc0000;
+        }
+        .back-button {
+            display: block;
+            margin-top: 20px;
+            text-decoration: none;
+            padding: 10px;
+            background: black;
+            color: white;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Simulador de Discusión con Yanina</h1>
+    <div class="chat-box">
+        <div class="messages" id="messages"></div>
+        <div class="input-box">
+            <input type="text" id="userInput" placeholder="Decile algo a Yanina...">
+            <button onclick="sendMessage()">Enviar</button>
+        </div>
+    </div>
+    <a class="back-button" href="index.html">Volver al inicio</a>
+    
+    <script>
+        const responses = [
+            "¡Ay, amor! Si no te gusto, no me mires.",
+            "¿Y vos quién sos?",
+            "Por favor, amor, ubicate.",
+            "¡Mirá cómo tiemblo!",
+            "No te banco, pero te entiendo.",
+            "¿Qué decís? ¡Ridícula!",
+            "No tengo tiempo para esto, amor.",
+            "Sos un chiste, mi vida.",
+            "Te mando un besito, porque me das pena.",
+            "¡Basta, amor! No tenés razón.",
+            "Querido, hablá con fundamentos, por favor.",
+            "Ay, por favor, qué ridículo lo tuyo.",
+            "¡No me hagas perder el tiempo!",
+            "Amor, cuando sepas algo, hablamos.",
+            "¡Estás diciendo pavadas, mi vida!",
+            "No me hagas reír, por favor.",
+            "No tenés idea de lo que hablás.",
+            "Ay, amor, qué poco criterio el tuyo.",
+            "No me interesa tu opinión, seguí de largo.",
+            "¿En serio creés que me importa? ¡Por favor!",
+            "No te hagas la estrella, amor.",
+            "Sos puro bla bla, mi vida.",
+            "Si supieras de lo que hablás, capaz te escucho.",
+            "No me hagas perder la paciencia, amor.",
+            "Por favor, me hacés reír.",
+            "Cuando tengas razón, hablamos.",
+            "¿Me estás cargando? Ay, amor...",
+            "Sos un personaje, mi vida.",
+            "Si te molesto, podés bloquearme, amor.",
+            "Hacete ver, porque lo tuyo es grave."
+        ];
+        
+        function sendMessage() {
+            let userInput = document.getElementById("userInput").value;
+            if (userInput.trim() === "") return;
+            
+            let messagesDiv = document.getElementById("messages");
+            messagesDiv.innerHTML += `<p><strong>Vos:</strong> ${userInput}</p>`;
+            
+            let randomResponse = responses[Math.floor(Math.random() * responses.length)];
+            setTimeout(() => {
+                messagesDiv.innerHTML += `<p><strong>Yanina:</strong> ${randomResponse}</p>`;
+                messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            }, 1000);
+            
+            document.getElementById("userInput").value = "";
+        }
+    </script>
+</body>
+</html>

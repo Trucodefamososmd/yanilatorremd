@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investigando con Yanina</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+            background:linear-gradient(to right, #0044ff, #ff3300);
+            color: #333;
+            padding: 20px;
+        }
+        .game-box {
+            width: 80%;
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        button {
+            padding: 12px;
+            margin-top: 10px;
+            border-radius: 8px;
+            border: none;
+            font-size: 1em;
+            width: 90%;
+            max-width: 500px;
+            background: #ff3366;
+            color: white;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: bold;
+        }
+        button:hover {
+            background: #cc0033;
+        }
+        .respuesta {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-top: 20px;
+            color: #cc0033;
+        }
+        .back-button {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            padding: 14px;
+            background: black;
+            color: white;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: bold;
+        }
+        .back-button:hover {
+            background: gray;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔍 Investigando con Yanina 🕵️‍♀️</h1>
+    <h2>Adiviná quién dijo la frase</h2>
+    <div class="game-box">
+        <p id="frase">Presioná "Nueva Frase" para empezar.</p>
+        <button onclick="nuevaFrase()">Nueva Frase</button>
+        <div id="opciones"></div>
+        <p class="respuesta" id="mensaje"></p>
+    </div>
+    <a class="back-button" href="index.html">Volver al inicio</a>
+
+    <script>
+        const frases = [
+            { frase: "¿Quiénes son?", opciones: ["Moria Casán", "Pampita", "Cinthia Fernández"], correcta: "Moria Casán" },
+            { frase: "Yo tengo códigos, amor", opciones: ["Yanina Latorre", "Sol Pérez", "Lizy Tagliani"], correcta: "Yanina Latorre" },
+            { frase: "La pelota no se mancha.", opciones: ["Maradona", "Messi", "Di Maria"], correcta: "Maradona" },
+            { frase: "Yo soy una estrella", opciones: ["Carmen Barbieri", "Susana Giménez", "Mariana Nannis"], correcta: "Susana Giménez" },
+            { frase: "¿Qué mirás, bobo? Andá pa' allá.", opciones: ["Messi", "De Paul", "Otamendi"], correcta: "Messi" },
+            { frase: "Si querés llorar, llorá.", opciones: ["Yanina Latorre", "Nancy Pazos", "Moria Casan"], correcta: "Moria Casan" },
+            { frase: "Yo no manejo un Fiat 600.", opciones: ["Charlotte Caniggia", "Cinthia Fernández", "Ricardo Fort"], correcta: "Ricardo Fort" },
+            { frase: "Buenas noches, América.", opciones: ["Moria Casán", "Marcelo Tinelli", "Yanina Latorre"], correcta: "Marcelo Tinelli" },
+            { frase: "Como te ven, te tratan.", opciones: ["Pampita", "Mirtha Legrand", "Flor Peña"], correcta: "Mirtha Legrand" },
+            { frase: "El público se renueva.", opciones: ["Pampita", "Mirtha Legrand", "Flor Peña"], correcta: "Mirtha Legrand" },
+            { frase: "¿Hay que trabajar? No me gusta.", opciones: ["Susana Giménez", "Charlotte Caniggia", "Vicky Xipolitakis"], correcta: "Charlotte Caniggia" },
+            { frase: "Es un disgusto", opciones: ["Pampita", "Polino", "Moria Casan"], correcta: "Polino" },        
+        ];
+
+        let frasesRestantes = [...frases];
+
+        function nuevaFrase() {
+            document.getElementById("mensaje").innerText = "";
+            if (frasesRestantes.length === 0) {
+                document.getElementById("frase").innerText = "🎉 Juego terminado 🎉";
+                document.getElementById("opciones").innerHTML = "";
+                return;
+            }
+            
+            let index = Math.floor(Math.random() * frasesRestantes.length);
+            let fraseActual = frasesRestantes.splice(index, 1)[0];
+            document.getElementById("frase").innerText = `❓ Frase: "${fraseActual.frase}"`;
+            mostrarOpciones(fraseActual);
+        }
+
+        function mostrarOpciones(fraseActual) {
+            const opcionesDiv = document.getElementById("opciones");
+            opcionesDiv.innerHTML = "";
+            fraseActual.opciones.forEach(opcion => {
+                const button = document.createElement("button");
+                button.innerText = opcion;
+                button.onclick = () => verificarRespuesta(opcion, fraseActual.correcta);
+                opcionesDiv.appendChild(button);
+            });
+        }
+
+        function verificarRespuesta(seleccion, correcta) {
+            const mensaje = document.getElementById("mensaje");
+            if (seleccion === correcta) {
+                mensaje.innerText = "✔ ¡Correcto!";
+                mensaje.style.color = "green";
+            } else {
+                mensaje.innerText = "❌ Incorrecto, intentá otra vez.";
+                mensaje.style.color = "red";
+            }
+        }
+    </script>
+</body>
+</html>
